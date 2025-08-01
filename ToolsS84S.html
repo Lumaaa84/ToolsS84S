@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>SILENCE84system - Generator Nomor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+      padding: 30px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    .channel-link, .donasi-section {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .channel-link a, .donasi-section a {
+      background-color: #25d366;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .donasi-section img {
+      margin-top: 15px;
+      width: 200px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      font-size: 16px;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+    }
+    .start-btn {
+      background-color: #007bff;
+      color: white;
+    }
+    .copy-btn {
+      background-color: #28a745;
+      color: white;
+      margin-left: 10px;
+    }
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>SILENCE84system</h1>
+
+    <div class="channel-link">
+      🔗 <a href="https://whatsapp.com/channel/0029VbBEQ9M7oQhl7uIWZV3O" target="_blank">
+        Join Saluran WhatsApp Kami
+      </a>
+      <p style="margin-top:10px">Dukung kami dengan bergabung di saluran dan kirim donasi seikhlasnya agar kami tetap semangat update tools gratisan! 💪</p>
+    </div>
+
+    <div class="donasi-section">
+      <strong>💰 Donasi via QRIS (GoPay, DANA, OVO, dll)</strong><br />
+      <img src="https://i.imgur.com/JVGq1Bs.png" alt="QRIS Donasi" />
+    </div>
+
+    <label for="prefix">Prefix Nomor (contoh: 085789036)</label>
+    <input type="text" id="prefix" placeholder="Contoh: 085789036" />
+
+    <label for="batas">Jumlah Digit Akhir (contoh: 49 untuk 000–049)</label>
+    <input type="number" id="batas" placeholder="Contoh: 49" />
+
+    <button class="start-btn" onclick="mulaiGenerate()">🚀 Mulai</button>
+    <button class="copy-btn" onclick="salinNomor()">📋 Salin Semua</button>
+
+    <textarea id="nomorArea" readonly></textarea>
+    <div id="status">Menunggu input...</div>
+
+    <footer>
+      Developer: SILENCE84system<br />
+      &copy; 2025 | Dibuat untuk berbagi tools gratis dan kreatif 💻
+    </footer>
+  </div>
+
+  <script>
+    let semuaNomor = [];
+    let i = 0;
+
+    function mulaiGenerate() {
+      const prefix = document.getElementById("prefix").value.trim();
+      const batas = parseInt(document.getElementById("batas").value);
+      const area = document.getElementById("nomorArea");
+      const status = document.getElementById("status");
+
+      if (!prefix || isNaN(batas)) {
+        alert("Mohon isi prefix dan batas angka yang valid.");
+        return;
+      }
+
+      semuaNomor = [];
+      i = 0;
+      area.value = "";
+      status.innerText = "⏳ Sedang memuat nomor...";
+
+      function generateBerikutnya() {
+        if (i > batas) {
+          status.innerText = "✅ Selesai: Total " + (batas + 1) + " nomor.";
+          return;
+        }
+
+        const belakang = i.toString().padStart(3, "0");
+        semuaNomor.push(prefix + belakang);
+        area.value = semuaNomor.join("\n");
+
+        i++;
+        setTimeout(generateBerikutnya, 10);
+      }
+
+      generateBerikutnya();
+    }
+
+    function salinNomor() {
+      const area = document.getElementById("nomorArea");
+      area.select();
+      area.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("✅ Nomor berhasil disalin!");
+    }
+  </script>
+
+</body>
+</html>
